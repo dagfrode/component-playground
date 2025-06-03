@@ -33,9 +33,6 @@ function App() {
   )
 }
 
-
-import React, { useRef } from 'react';
-
 interface Props {
   value?: Date;
   onChange?: (value?: Date) => void;
