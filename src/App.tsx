@@ -34,56 +34,77 @@ function App() {
 }
 
 
+import React, { useRef } from 'react';
+
 interface Props {
-  value?: string; // Format: dd.mm.yyyy
-  onChange?: (value: string) => void;
+  value?: Date;
+  onChange?: (value?: Date) => void;
   label?: string;
   id?: string;
 }
 
-const formatDateToInput = (date: string): string => {
-  const [dd, mm, yyyy] = date.split('.');
-  if (!dd || !mm || !yyyy) return '';
-  return `${yyyy}-${mm}-${dd}`;
+const pad = (num: number): string => String(num).padStart(2, '0');
+
+const formatDateToDdMmYyyy = (date?: Date): string => {
+  if (!date) return '';
+  return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}`;
 };
 
-const formatDateFromInput = (value: string): string => {
+const parseDdMmYyyyToDate = (str: string): Date | undefined => {
+  const [dd, mm, yyyy] = str.split('.');
+  if (!dd || !mm || !yyyy) return undefined;
+  const date = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+  return isNaN(date.getTime()) ? undefined : date;
+};
+
+const formatDateToInputValue = (date?: Date): string => {
+  if (!date) return '';
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+};
+
+const parseInputValueToDate = (value: string): Date | undefined => {
   const [yyyy, mm, dd] = value.split('-');
-  if (!dd || !mm || !yyyy) return '';
-  return `${dd}.${mm}.${yyyy}`;
+  if (!dd || !mm || !yyyy) return undefined;
+  const date = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+  return isNaN(date.getTime()) ? undefined : date;
 };
 
-const isTouchDevice = () => {
+const isTouchDevice = (): boolean => {
   return typeof window !== 'undefined' && 'ontouchstart' in window;
 };
 
-const CustomDateInput: React.FC<Props> = ({ value, onChange, label, id }) => {
-  const inputId = id || 'custom-date-input';
+const CustomDateInput: React.FC<Props> = ({
+  value,
+  onChange,
+  label,
+  id = 'custom-date-input',
+}) => {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+    const parsed = parseDdMmYyyyToDate(e.target.value);
+    onChange?.(parsed);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatDateFromInput(e.target.value);
-    onChange(formatted);
+    const parsed = parseInputValueToDate(e.target.value);
+    onChange?.(parsed);
   };
 
   const handleFocus = () => {
     if (isTouchDevice() && hiddenInputRef.current) {
-      hiddenInputRef.current.showPicker?.(); // For supporting browsers
-      hiddenInputRef.current.click(); // Fallback
+      hiddenInputRef.current.showPicker?.();
+      hiddenInputRef.current.click();
     }
   };
 
   return (
     <div>
-      <label htmlFor={inputId}>{label}</label>
+      {label && <label htmlFor={id}>{label}</label>}
       <input
-        id={inputId}
+        id={id}
         type="text"
-        value={value}
+        value={formatDateToDdMmYyyy(value)}
         onChange={handleTextChange}
         onFocus={handleFocus}
         placeholder="dd.mm.yyyy"
@@ -94,14 +115,15 @@ const CustomDateInput: React.FC<Props> = ({ value, onChange, label, id }) => {
         <input
           type="date"
           ref={hiddenInputRef}
-          style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}
+          value={formatDateToInputValue(value)}
           onChange={handleDateChange}
-          value={formatDateToInput(value)}
+          style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}
         />
       )}
     </div>
   );
 };
+
 
 
 
