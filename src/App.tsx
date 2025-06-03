@@ -34,6 +34,7 @@ function App() {
 }
 
 
+
 interface Props {
   value?: Date;
   onChange?: (value?: Date) => void;
@@ -41,7 +42,7 @@ interface Props {
   id?: string;
 }
 
-const pad = (num: number): string => String(num).padStart(2, '0');
+const pad = (n: number): string => String(n).padStart(2, '0');
 
 const formatDateToDdMmYyyy = (date?: Date): string => {
   if (!date) return '';
@@ -67,10 +68,6 @@ const parseInputValueToDate = (value: string): Date | undefined => {
   return isNaN(date.getTime()) ? undefined : date;
 };
 
-const isTouchDevice = (): boolean => {
-  return typeof window !== 'undefined' && 'ontouchstart' in window;
-};
-
 const CustomDateInput: React.FC<Props> = ({
   value,
   onChange,
@@ -81,7 +78,6 @@ const CustomDateInput: React.FC<Props> = ({
   const [textValue, setTextValue] = useState(formatDateToDdMmYyyy(value));
   const lastPropValue = useRef<Date | undefined>(value);
 
-  // Sync internal text when external value changes
   useEffect(() => {
     if (value?.getTime() !== lastPropValue.current?.getTime()) {
       setTextValue(formatDateToDdMmYyyy(value));
@@ -90,15 +86,10 @@ const CustomDateInput: React.FC<Props> = ({
   }, [value]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    setTextValue(raw);
-
-    const parsed = parseDdMmYyyyToDate(raw);
-    if (parsed) {
-      onChange?.(parsed);
-    } else {
-      onChange?.(undefined); // optional: only if you want to clear on invalid
-    }
+    const val = e.target.value;
+    setTextValue(val);
+    const parsed = parseDdMmYyyyToDate(val);
+    onChange?.(parsed);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,49 +100,45 @@ const CustomDateInput: React.FC<Props> = ({
     }
   };
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-   e.preventDefault();
-    if (isTouchDevice() && hiddenInputRef.current) {
-      e.preventDefault(); // stop keyboard from opening
-      hiddenInputRef.current.showPicker?.();
-      hiddenInputRef.current.click();
-    }
+  const handleButtonClick = () => {
+    hiddenInputRef.current?.showPicker?.();
+    hiddenInputRef.current?.click();
   };
 
   return (
     <div>
       {label && <label htmlFor={id}>{label}</label>}
-      <input
-        id={id}
-        type="text"
-        value={textValue}
-        onChange={handleTextChange}
-        onFocus={handleFocus}
-        placeholder="dd.mm.yyyy"
-        inputMode={isTouchDevice()?'none' : 'numeric'}
-        pattern="\d{2}.\d{2}.\d{4}"
-        autoComplete="off"
-      />
-      {isTouchDevice() && (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5em' }}>
         <input
-          type="date"
-          ref={hiddenInputRef}
-          value={formatDateToInputValue(value)}
-          onChange={handleDateChange}
-          style={{
-            position: 'absolute',
-            opacity: 0,
-            pointerEvents: 'none',
-            height: 0,
-            width: 0,
-          }}
+          id={id}
+          type="text"
+          value={textValue}
+          onChange={handleTextChange}
+          placeholder="dd.mm.yyyy"
+          inputMode="numeric"
+          pattern="\d{2}.\d{2}.\d{4}"
+          autoComplete="off"
         />
-      )}
+        <button type="button" onClick={handleButtonClick}>
+          📅
+        </button>
+      </div>
+      <input
+        type="date"
+        ref={hiddenInputRef}
+        value={formatDateToInputValue(value)}
+        onChange={handleDateChange}
+        style={{
+          position: 'absolute',
+          opacity: 0,
+          pointerEvents: 'none',
+          height: 0,
+          width: 0,
+        }}
+      />
     </div>
   );
 };
-
-
 
 
 export default App
