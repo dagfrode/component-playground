@@ -33,6 +33,7 @@ function App() {
   )
 }
 
+
 interface Props {
   value?: Date;
   onChange?: (value?: Date) => void;
@@ -77,19 +78,40 @@ const CustomDateInput: React.FC<Props> = ({
   id = 'custom-date-input',
 }) => {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const [textValue, setTextValue] = useState(formatDateToDdMmYyyy(value));
+  const lastPropValue = useRef<Date | undefined>(value);
+
+  // Sync internal text when external value changes
+  useEffect(() => {
+    if (value?.getTime() !== lastPropValue.current?.getTime()) {
+      setTextValue(formatDateToDdMmYyyy(value));
+      lastPropValue.current = value;
+    }
+  }, [value]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const parsed = parseDdMmYyyyToDate(e.target.value);
-    onChange?.(parsed);
+    const raw = e.target.value;
+    setTextValue(raw);
+
+    const parsed = parseDdMmYyyyToDate(raw);
+    if (parsed) {
+      onChange?.(parsed);
+    } else {
+      onChange?.(undefined); // optional: only if you want to clear on invalid
+    }
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const parsed = parseInputValueToDate(e.target.value);
-    onChange?.(parsed);
+    if (parsed) {
+      onChange?.(parsed);
+      setTextValue(formatDateToDdMmYyyy(parsed));
+    }
   };
 
-  const handleFocus = () => {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (isTouchDevice() && hiddenInputRef.current) {
+      e.preventDefault(); // stop keyboard from opening
       hiddenInputRef.current.showPicker?.();
       hiddenInputRef.current.click();
     }
@@ -101,12 +123,13 @@ const CustomDateInput: React.FC<Props> = ({
       <input
         id={id}
         type="text"
-        value={formatDateToDdMmYyyy(value)}
+        value={textValue}
         onChange={handleTextChange}
         onFocus={handleFocus}
         placeholder="dd.mm.yyyy"
         inputMode="numeric"
         pattern="\d{2}.\d{2}.\d{4}"
+        autoComplete="off"
       />
       {isTouchDevice() && (
         <input
@@ -114,7 +137,13 @@ const CustomDateInput: React.FC<Props> = ({
           ref={hiddenInputRef}
           value={formatDateToInputValue(value)}
           onChange={handleDateChange}
-          style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}
+          style={{
+            position: 'absolute',
+            opacity: 0,
+            pointerEvents: 'none',
+            height: 0,
+            width: 0,
+          }}
         />
       )}
     </div>
