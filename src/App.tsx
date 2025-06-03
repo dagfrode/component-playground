@@ -128,7 +128,7 @@ const CustomDateInput: React.FC<Props> = ({
         onChange={handleTextChange}
         onFocus={handleFocus}
         placeholder="dd.mm.yyyy"
-        inputMode="numeric"
+        inputMode={isTouchDevice()?'none' : 'numeric'}
         pattern="\d{2}.\d{2}.\d{4}"
         autoComplete="off"
       />
