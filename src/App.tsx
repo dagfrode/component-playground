@@ -110,6 +110,7 @@ const CustomDateInput: React.FC<Props> = ({
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+   e.preventDefault();
     if (isTouchDevice() && hiddenInputRef.current) {
       e.preventDefault(); // stop keyboard from opening
       hiddenInputRef.current.showPicker?.();
