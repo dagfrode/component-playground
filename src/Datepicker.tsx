@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 interface Props {
   value?: string;
-  onChange?: (value?: string) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
   id?: string;
   touchDevice?: boolean;
@@ -56,16 +56,16 @@ const CustomDateInput: React.FC<Props> = ({
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setTextValue(val);
-    onChange?.(val);
+    onChange?.(e);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const parsed = parseInputValueToDate(e.target.value);
     if (parsed) {
-      onChange?.(formatDateToDdMmYyyy(parsed));
+      onChange?.(e);
       setTextValue(formatDateToDdMmYyyy(parsed));
     } else {
-      onChange?.(undefined);
+      onChange?.(e);
       setTextValue("");
     }
   };
@@ -74,16 +74,13 @@ const CustomDateInput: React.FC<Props> = ({
     hiddenInputRef.current?.showPicker?.();
   };
 
-  const handleDateInputClicked = () => {
-    if (touchDevice) {
-      handleButtonClick();
-    }
-  };
-
   // TODO add hide format
   // TODO hide formatting for touch devices?
   // TODO localize date format
   // TODO fix default  id
+
+  // ren input og på touch devices
+  // controlled input
 
   return (
     <div
@@ -100,9 +97,8 @@ const CustomDateInput: React.FC<Props> = ({
           type="text"
           value={textValue}
           onChange={handleTextChange}
-          onClick={handleDateInputClicked}
           placeholder="dd.mm.yyyy"
-          inputMode={touchDevice ? "none" : "numeric"}
+          inputMode="numeric"
           pattern="\d{2}.\d{2}.\d{4}"
           autoComplete="off"
         />
