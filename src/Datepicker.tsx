@@ -7,9 +7,9 @@ interface Props {
   touchDevice?: boolean;
 }
 
-const isTouchDevice = (): boolean => {
-  return typeof window !== "undefined" && "ontouchstart" in window;
-};
+// const isTouchDevice = (): boolean => {
+//   return typeof window !== "undefined" && "ontouchstart" in window;
+// };
 
 const pad = (n: number): string => String(n).padStart(2, "0");
 
@@ -47,7 +47,6 @@ const CustomDateInput: React.FC<Props> = ({
   value,
   onChange,
   label,
-  touchDevice = isTouchDevice(),
   id = "custom-date-input",
 }) => {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
