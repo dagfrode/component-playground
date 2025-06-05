@@ -26,8 +26,10 @@ function App() {
 
   return (
     <>
+      <h1>Test app</h1>
       <CustomDateInput {...form.register("dato")} />
-      <Icon name="1k_plus" size={32} alt="1k plus icon" />
+      <Icon name="1k_plus" />
+      <Icon name="1k_plus" size="lg" />
       <div>
         <p>Selected date: {date}</p>
       </div>

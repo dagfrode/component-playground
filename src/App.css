@@ -44,3 +44,52 @@
 :root {
   accent-color: red;
 }
+
+:root,
+:host {
+  --ffe-v-icons-size-sm: 20px;
+  --ffe-v-icons-size-md: 24px;
+  --ffe-v-icons-size-lg: 32px;
+  --ffe-v-icons-size-xl: 40px;
+}
+
+.ffe-icons {
+  mask-repeat: no-repeat;
+  mask-position: center;
+  background-color: currentcolor;
+  display: inline-block;
+  mask-size: 100%;
+}
+.ffe-icons--sm {
+  height: var(--ffe-v-icons-size-sm);
+  width: var(--ffe-v-icons-size-sm);
+}
+
+.ffe-icons--md {
+  height: var(--ffe-v-icons-size-md);
+  width: var(--ffe-v-icons-size-md);
+}
+
+.ffe-icons--lg {
+  height: var(--ffe-v-icons-size-lg);
+  width: var(--ffe-v-icons-size-lg);
+}
+
+.ffe-icons--xl {
+  height: var(--ffe-v-icons-size-xl);
+  width: var(--ffe-v-icons-size-xl);
+}
+
+&:where(.ffe-icons) {
+  color: var(--ffe-color-foreground-emphasis);
+}
+
+:root {
+  font-family: "SpareBank1";
+}
+
+h1 {
+  font-family: "SpareBank1-Title";
+  font-size: 2.5rem;
+  line-height: 1.2;
+}

@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "SpareBank1-medium";
+  font-display: fallback;
+  src: url("./SpareBank1-Medium-Web.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "SpareBank1-regular";
+  font-display: fallback;
+  src: url("./SpareBank1-Regular-Web.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "SpareBank1-italic";
+  font-display: fallback;
+  src: url("./SpareBank1-It-Web.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "SpareBank1-title-medium";
+  font-display: fallback;
+  src: url("./SpareBank1-Title-Medium-Web.woff2") format("woff2");
+}

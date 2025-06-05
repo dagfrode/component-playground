@@ -1,30 +1,42 @@
+import clsx from "clsx";
 import React from "react";
-
 type IconName = "1k_plus" | "1k" | "1x_mobiledata_badge" | "mobiledata";
 
-const ICON_CDN_BASE = "https://dagfrode.com/component-playground/public/icons";
+const ICON_CDN_BASE = "https://dagfrode.com/component-playground/icons";
 
-export interface IconProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+// Icon component that renders an SVG icon from a CDN
+// legg til circle bak icon
+//
+
+export interface IconProps extends React.ComponentPropsWithoutRef<"span"> {
   name: IconName;
-  size?: number;
-  alt?: string;
+
+  /** Size of the icon, default is the closest defined font-size */
+  size?: "sm" | "md" | "lg" | "xl";
+  /** Aria label text. If null/undefined, aria-hidden is automatically set to true */
+  ariaLabel?: React.ComponentProps<"span">["aria-label"];
 }
 
 export const Icon: React.FC<IconProps> = ({
   name,
-  size = 24,
-  alt = "",
-  ...props
+  className,
+  ariaLabel,
+  size = "md",
+  style,
+  ...rest
 }) => {
   return (
-    <img
-      src={`${ICON_CDN_BASE}/${name}.svg`}
-      width={size}
-      height={size}
-      alt={alt || name}
-      {...props}
-      loading="lazy"
-      draggable={false}
+    <span
+      role="img"
+      aria-label={ariaLabel}
+      aria-hidden={!ariaLabel}
+      className={clsx("ffe-icons", `ffe-icons--${size}`, className)}
+      style={{
+        maskImage: `url(${ICON_CDN_BASE}/${name}.svg)`,
+        WebkitMaskImage: `url(${ICON_CDN_BASE}/${name}.svg)`,
+        ...style,
+      }}
+      {...rest}
     />
   );
 };
