@@ -26,7 +26,7 @@ function App() {
 
   return (
     <>
-      <h1>Test app</h1>
+      <h1>Test app åæø o012</h1>
       <CustomDateInput label="Velg dato" {...form.register("dato")} />
       <Icon name="1k_plus" />
       <Icon name="1k_plus" size="lg" />

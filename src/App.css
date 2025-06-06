@@ -89,7 +89,32 @@
 }
 
 h1 {
-  font-family: "SpareBank1-Title";
+  font-family: "SpareBank1 Title", "SpareBank1", sans-serif;
   font-size: 2.5rem;
   line-height: 1.2;
+  margin-bottom: var(--ffe-spacing-xl);
+}
+
+:root {
+  /** Spacing */
+  --ffe-spacing: 8px;
+  --ffe-spacing-2xs: calc(var(--ffe-spacing) * 0.5);
+  --ffe-spacing-xs: calc(var(--ffe-spacing));
+  --ffe-spacing-sm: calc(var(--ffe-spacing) * 2);
+  --ffe-spacing-md: calc(var(--ffe-spacing) * 3);
+  --ffe-spacing-lg: calc(var(--ffe-spacing) * 4);
+  --ffe-spacing-xl: calc(var(--ffe-spacing) * 5);
+  --ffe-spacing-2xl: calc(var(--ffe-spacing) * 0.5);
+  --ffe-spacing-3xl: calc(var(--ffe-spacing) * 0.5);
+  --ffe-spacing-4xl: calc(var(--ffe-spacing) * 0.5);
+  --ffe-spacing-5xl: calc(var(--ffe-spacing) * 0.5);
+}
+
+@media (prefers-reduced-motion) {
+  :where(.ok-normalize) :is(*) {
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+  }
 }

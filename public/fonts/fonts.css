@@ -1,6 +1,18 @@
+/*bør vi legge inn dette?*/
+@supports (font: -apple-system-body) {
+  /* This allows font scaling on iOS devices while not doing the same on macOS. */
+  /* MacOS sets default font size to 13px if -apple-system-body is present, and that is, quite frankly, not something we should work around */
+  /* This is why we're using hover: none */
+  @media (hover: none) {
+    :root {
+      font: -apple-system-body;
+    }
+  }
+}
+
 @font-face {
   font-family: "SpareBank1";
-  font-weight: 500;
+  font-weight: bold;
   font-style: normal;
   font-display: fallback;
   src: url("./SpareBank1-Medium-Web.woff2") format("woff2");
@@ -8,7 +20,7 @@
 
 @font-face {
   font-family: "SpareBank1";
-  font-weight: 400;
+  font-weight: normal;
   font-style: normal;
   font-display: fallback;
   src: url("./SpareBank1-Regular-Web.woff2") format("woff2");
@@ -16,7 +28,7 @@
 
 @font-face {
   font-family: "SpareBank1";
-  font-weight: 400;
+  font-weight: normal;
   font-style: italic;
   font-display: fallback;
   src: url("./SpareBank1-It-Web.woff2") format("woff2");
@@ -24,8 +36,34 @@
 
 @font-face {
   font-family: "SpareBank1 Title";
-  font-weight: 500;
+  font-weight: normal;
   font-style: normal;
+  font-display: fallback;
+  src: url("./SpareBank1-Title-Medium-Web.woff2") format("woff2");
+}
+
+/*Gamle fonter scal depricates*/
+
+@font-face {
+  font-family: "SpareBank1-medium";
+  font-display: fallback;
+  src: url("./SpareBank1-Medium-Web.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "SpareBank1-regular";
+  font-display: fallback;
+  src: url("./SpareBank1-Regular-Web.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "SpareBank1-italic";
+  font-display: fallback;
+  src: url("./SpareBank1-It-Web.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "SpareBank1-title-medium";
   font-display: fallback;
   src: url("./SpareBank1-Title-Medium-Web.woff2") format("woff2");
 }
