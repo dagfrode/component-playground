@@ -5,6 +5,7 @@ import * as v from "valibot";
 import "./App.css";
 import CustomDateInput from "./Datepicker";
 import { Icon } from "./Icon";
+import { Button } from "./Button";
 
 function App() {
   const [date, setDate] = useState<string | undefined>("");
@@ -34,7 +35,7 @@ function App() {
         <p>Selected date: {date}</p>
       </div>
 
-      <button
+      <Button
         onClick={() => {
           console.log("Form state:", form.getValues());
           form.handleSubmit((data) => {
@@ -43,7 +44,7 @@ function App() {
         }}
       >
         Submit
-      </button>
+      </Button>
 
       <div>{form.formState.errors.dato?.message}</div>
     </>
